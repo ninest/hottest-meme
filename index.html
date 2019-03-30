@@ -63,6 +63,8 @@
         }
 
         button {
+          display: none;
+
           position: absolute;
           bottom: 5%;
           right: 10%;
@@ -113,8 +115,12 @@
 
     document.body.onload = () => {
       console.log('loaded');
-      document.body.removeChild(loader)
-      content.style.display = 'block';
+
+      setTimeout(function() {
+        document.body.removeChild(loader)
+        content.style.display = 'block';
+        button.style.display = 'block';
+      }, 1450)
     }
 
     button.onclick = getVideo;
