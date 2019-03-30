@@ -1,0 +1,147 @@
+<head>
+  <title>Memes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="status_color" name="theme-color" content="#000000"/>
+
+  <style type="text/css">
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      color: #aaa;
+    }
+    :root {
+      --transform50: translate(-50%, -50%);
+    }
+
+    body {
+      background-color: black;
+      padding: 5% 10%;
+    }
+      h1 {
+        font-weight: 900;
+        font-size: 3rem;
+      }
+
+      #loading {
+      }
+        .loader {
+          margin: 10% auto;
+          width: 90%;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+
+          border: 10px solid #bcbcbc;
+          border-radius: 50%;
+          border-top: 10px solid blue;
+          width: 120px;
+          height: 120px;
+
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: var(--transform50) rotate(0deg); }
+          25% { transform: var(--transform50) rotate(90deg) }
+          50% { transform: var(--transform50) rotate(180deg) }
+          75% { transform: var(--transform50) rotate(270deg) }
+          100% { transform: var(--transform50) rotate(360deg) }
+        }
+
+        @media only screen and (min-width: 700px) {
+          .loader {
+            top: 25%;
+          }
+        } 
+
+      #content {
+        display: none;
+      }  
+        h2 {
+          line-height: 2.0;
+          font-size: 2rem;
+        }
+
+        button {
+          position: absolute;
+          bottom: 5%;
+          right: 10%;
+
+          padding: 8px 30px;
+          background-color: blue;
+          color: white;
+          font-size: 1.3rem;
+          letter-spacing: 1.3px;
+          font-weight: 600;
+          border: none;
+          border-radius: 7px;
+        }
+
+        #video {
+          width: 100%;
+          border-radius: 10px;
+        }
+
+  </style>
+</head>
+
+<body>
+
+  <h1>Best Meme</h1>
+
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+
+  <div id="found">
+    <h2 id="content">
+      Found!
+    </h2>
+    <button id="show">Show me</button>
+  </div>
+
+  <div>
+    <video id="video"></video>
+  </div>
+
+  <script type="text/javascript">
+    let loader = document.getElementById('loading');
+    let content = document.getElementById('content');
+    let found = document.getElementById('found');
+    let button = document.getElementById('show');
+    let video = document.getElementById('video');
+
+    document.body.onload = () => {
+      console.log('loaded');
+      document.body.removeChild(loader)
+      content.style.display = 'block';
+    }
+
+    button.onclick = getVideo;
+
+    function getVideo() {
+      // first hide the found! and button
+      document.body.removeChild(found);
+
+      var constraints = {
+        audio: false, 
+        video: {
+          width: 1280,
+          height: 720,
+          facingMode: "user"
+        } 
+      }; 
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        var primary = document.querySelector('#video');
+        primary.srcObject = mediaStream;
+        primary.onloadedmetadata = function(e) {
+          primary.play();
+        };
+      })
+      .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+      });
+    }
+  </script>
+</body>
